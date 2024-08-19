@@ -193,6 +193,31 @@ export const Waveform = forwardRef<IWaveformRef, IWaveform>((props, ref) => {
     }
   };
 
+  const seekToPlayerAction = async (progress: number) => {
+    if (mode === 'static') {
+      try {
+        const seekSuccessful = await seekToPlayer({
+          playerKey: `PlayerFor${path}`,
+          progress
+        });
+
+        if (seekSuccessful) {
+          return Promise.resolve(true);
+        } else {
+          return Promise.reject(
+              new Error(`error in seeking player to: ${progress}`)
+          );
+        }
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    } else {
+      return Promise.reject(
+          new Error('error in seekting to player: mode is not static')
+      );
+    }
+  }
+
   const startPlayerAction = async (args?: IStartPlayerRef) => {
     if (mode === 'static') {
       try {
@@ -492,6 +517,7 @@ export const Waveform = forwardRef<IWaveformRef, IWaveform>((props, ref) => {
     pauseRecord: pauseRecordingAction,
     stopRecord: stopRecordingAction,
     resumeRecord: resumeRecordingAction,
+    seekTo: seekToPlayerAction,
   }));
 
   return (

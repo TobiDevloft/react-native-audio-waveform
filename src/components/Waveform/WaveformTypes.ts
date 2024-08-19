@@ -40,6 +40,7 @@ export interface IStartPlayerRef {
 export interface IWaveformRef {
   startPlayer: (args?: IStartPlayerRef) => Promise<boolean>;
   stopPlayer: () => Promise<boolean>;
+  seekTo: (progress: number) => Promise<boolean>;
   pausePlayer: () => Promise<boolean>;
   resumePlayer: (args?: IStartPlayerRef) => Promise<boolean>;
   startRecord: (args?: Partial<IStartRecording>) => Promise<boolean>;
